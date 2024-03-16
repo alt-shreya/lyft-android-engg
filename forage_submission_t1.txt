@@ -1,0 +1,66 @@
+/**
+ * You can edit, run, and share this code.
+ * play.kotlinlang.org
+ */
+fun main() {    
+    initDB()
+	// println("Hello World")
+    // Test functions here
+	println(validInfo(storedCard1)) //true
+    println(validInfo(invalidCard1)) //false
+    println(addCardToDatabase(PaymentInfo("Jake Peralta", 99999999, 122))) //true
+    println(addCardToDatabase(storedCard2)) //false
+    
+    
+}
+
+data class PaymentInfo(
+    val cardOwner: String,
+    val cardNumber: Int,
+    val cardCVV: Int
+)
+
+// Hint: accessing a property of a data class is as simple as using examplePaymentInfo.cardNumber to retrieve the Int value
+
+val storedCard1 = PaymentInfo("Bob", 12222333, 111)
+val storedCard2 = PaymentInfo("John", 11113333, 134)
+
+val invalidCard1 = PaymentInfo("", 11113333, 134)
+val invalidCard2 = PaymentInfo("", 11113333, 1222)
+
+// This database is treated as a global variable that we can access directly in addCardToDatabase
+val cardDataBase = mutableMapOf<Int, PaymentInfo>()
+
+// Don't change this function
+fun initDB() {
+    cardDataBase[storedCard1.cardNumber] = storedCard1
+    cardDataBase[storedCard2.cardNumber] = storedCard2
+}
+
+fun validInfo(paymentInfo: PaymentInfo): Boolean {
+    // TODO validate paymentInfo according to instructions
+//     if PaymentInfo meets criteria: return true, else: 
+//     if card name is not empty & if card number is int, len(card_number) == 8 & card CVV is int and len(cvv_num ==3)
+    val cardOwnerValid = !(paymentInfo.cardOwner.isBlank())
+    val cardNumberValid = paymentInfo.cardNumber.toString().length == 8
+    val CVVNumberValid = paymentInfo.cardCVV.toString().length == 3
+    return cardOwnerValid && cardNumberValid && CVVNumberValid
+}
+
+fun addCardToDatabase(paymentInfo: PaymentInfo): Boolean {
+    // TODO check if we can add card to database according to instructions 
+    // if this card already exists
+    	// use println("ERROR") and return false
+   	if (cardDataBase.contains(paymentInfo.cardNumber))
+    {
+        println("ERROR")
+        return false
+    }
+	else{
+    	// use println("SUCCESS"), add the card to the database, and return true if the card can be added
+        println("SUCCESS!")
+        cardDataBase.put(paymentInfo.cardNumber, paymentInfo)
+        return true
+    }
+    
+}
